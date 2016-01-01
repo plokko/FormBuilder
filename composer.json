@@ -1,0 +1,8 @@
+{
+  "name": "plokko/FormBuilder",
+  "description": "Helper for creating forms in laravel",
+  "require": {
+      "php": ">=5.4",
+      "laravelcollective/html": "~5.0"
+  }
+}
