@@ -13,6 +13,11 @@ class FormBuilderProvider extends ServiceProvider
      */
     public function boot()
     {
+        //$this->loadViewsFrom(__DIR__.'/views', 'formbuilder');
+
+        $this->publishes([
+            __DIR__.'/views/formbuilder' => resource_path('views/formbuilder'),
+        ]);
     }
 
     /**
