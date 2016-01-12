@@ -1,8 +1,20 @@
 {
   "name": "plokko/formbuilder",
   "description": "Helper for creating forms in laravel",
+  "keywords":["laravel","form","helper","select2"],
   "require": {
       "php": ">=5.4",
       "laravelcollective/html": "~5.0"
+  },
+  "require-dev":{},
+
+  "authors":[
+    {"name":"Francesco Pellerone"}
+  ],
+
+  "autoload": {
+    "psr-4": {
+      "plokko\\FormBuilder\\": "src"
+    }
   }
 }
