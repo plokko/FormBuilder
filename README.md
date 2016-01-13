@@ -4,12 +4,13 @@ Laravel Helper for creating form
 ##Installation
 
 1. Require with composer
-
-        composer require plokko/formbuilder
-
+```shell
+composer require plokko/formbuilder
+```
 and then publish the default views and config files
-
-        php artisan vendor:publish
+```shell
+php artisan vendor:publish
+```
 
 2. Add the provider and facades in the app config file
 /config/app.php
