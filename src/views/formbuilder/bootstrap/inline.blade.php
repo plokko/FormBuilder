@@ -1,7 +1,7 @@
 @foreach($fields AS $field)
 
     <div class="form-group">
-        {!! $field->label(['class'=>'col-sm-2 control-label']) !!}
+        {!! $field->renderLabel(['class'=>'col-sm-2 control-label']) !!}
         <div class="col-sm-8">
         @if(!$field->isGroup())
                 {!!
@@ -11,7 +11,7 @@
                 !!}
         @else
             @foreach($field AS $f)
-                {!! $f->label() !!}
+                {!! $f->renderLabel() !!}
                 {!! $f->addClass('form-control') !!}
             @endforeach
         @endif

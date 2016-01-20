@@ -9,7 +9,7 @@ class FormFieldGroup implements Contracts\FormBuilderField, \IteratorAggregate
     public
         $form,
         $name,
-        $label=null;
+        $label;
 
     private
         $fields=[];
@@ -22,17 +22,19 @@ class FormFieldGroup implements Contracts\FormBuilderField, \IteratorAggregate
     }
 
     /**
-     * @return string
+     * @param $label
+     * @return $this
      */
-    function getLabel(){
-        return $this->label?:$this->name;
+    function label($label){
+        $this->label=$label;
+        return $this;
     }
     /**
      * Render the associated label
      * @param array $opt
      * @return string
      */
-    function label($opt=[])
+    function renderLabel($opt=[])
     {
         return \Form::label(
             $this->name,
@@ -40,7 +42,6 @@ class FormFieldGroup implements Contracts\FormBuilderField, \IteratorAggregate
             $opt
         );
     }
-
 
     /**
      * @param $label

@@ -2,7 +2,7 @@
 @foreach($fields AS $field)
 
     <div class="form-group">
-        {!! $field->label(['class'=>'control-label']) !!}
+        {!! $field->renderLabel(['class'=>'control-label']) !!}
         <div>
         @if(!$field->isGroup())
             {!!
@@ -12,7 +12,7 @@
             !!}
         @else
             @foreach($field AS $f)
-                {!! $f->label() !!}
+                {!! $f->renderLabel() !!}
                 {!! $f->addClass('form-control') !!}
             @endforeach
         @endif
