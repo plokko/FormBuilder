@@ -38,7 +38,7 @@ class FormFieldGroup implements Contracts\FormBuilderField, \IteratorAggregate
     {
         return \Form::label(
             $this->name,
-            $this->getLabel(),
+            $this->label,
             $opt
         );
     }

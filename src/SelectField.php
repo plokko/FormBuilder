@@ -39,7 +39,7 @@ class SelectField implements Contracts\FormBuilderField
     {
         return \Form::label(
             $this->name,
-            $this->getLabel(),
+            $this->label,
             $opt
         );
     }
