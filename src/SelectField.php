@@ -123,7 +123,7 @@ class SelectField implements Contracts\FormBuilderField
     /**
      * @return string
      */
-    function toString(){
+    function render(){
         $form=\App::make('form');
         $v=$this->getValue();
 

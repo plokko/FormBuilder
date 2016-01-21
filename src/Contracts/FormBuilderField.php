@@ -5,8 +5,13 @@ interface FormBuilderField
 {
     public function __construct(&$form,$name);
 
+    /// Set //
     function label($label);
-    function renderLabel();
 
+    /// Render ///
+    function renderLabel();
+    function render();
+
+    //
     function isGroup();
 }

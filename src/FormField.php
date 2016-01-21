@@ -135,7 +135,7 @@ class FormField implements Contracts\FormBuilderField
     /**
      * @return string
      */
-    function toString(){
+    function render(){
         $form=\App::make('form');
         $t=$this->type;
         $v=$this->getValue();
