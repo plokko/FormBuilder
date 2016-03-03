@@ -6,6 +6,6 @@ class FormBuilder extends Facade {
 
     protected static function getFacadeAccessor()
     {
-        return 'FormBuilder';
+        return 'FormBuilderProvider';
     }
 }

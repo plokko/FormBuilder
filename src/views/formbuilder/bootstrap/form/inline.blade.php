@@ -7,13 +7,13 @@
             @if(!$field->isGroup())
                     {!!
                         ($field->type=='checkbox'||$field->type=='radio')?
-                            $field://No form-control for input or radios
-                            $field->addClass('form-control')
+                            $field->render()://No form-control for input or radios
+                            $field->addClass('form-control')->render()
                     !!}
             @else
                 @foreach($field AS $f)
                     {!! $f->renderLabel() !!}
-                    {!! $f->addClass('form-control') !!}
+                    {!! $f->addClass('form-control')->render() !!}
                 @endforeach
             @endif
             </div>

@@ -1,48 +1,36 @@
 <?php
 namespace plokko\FormBuilder;
 
-use Illuminate\Support\ServiceProvider;
+use League\Flysystem\Exception;
+use plokko\FormBuilder\fields\FormField;
 
-class FormBuilderProvider extends ServiceProvider
+class FormBuilderProvider
 {
-    protected $defer = true;
-    /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //$this->loadViewsFrom(__DIR__.'/views', 'formbuilder');
+    protected
+        $view='formbuilder.bootstrap.form.base',
+        $fieldProviders=[];
 
-        $this->publishes([
-            __DIR__.'/views/formbuilder' => resource_path('views/formbuilder'),
-        ]);
+    function __construct($cfg=[])
+    {
+        foreach(['view','fieldProviders']AS $k)
+            if(isset($cfg[$k]))
+                $this->{$k}=$cfg[$k];
     }
 
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //$this->mergeConfigFrom(__DIR__.'/config/default-config.php','PageHelper');
 
-        $this->app->bind('FormBuilder',function ($app){
-            return new FormBuilder();//$app['config']['FormBuilder']);
-        });
+    public function make($opt=[])
+    {
+        return (new FormBuilder($opt))->view($this->view);
     }
 
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
+    public function field(FormBuilder &$form,$name,$type)
     {
-        return [
-            'FormBuilder'
-        ];
+        if(array_key_exists($type,$this->fieldProviders))
+        {
+            $class=$this->fieldProviders[$type];
+            return new $class($form,$name,$type);
+        }else{
+            return new FormField($form,$name,$type);
+        }
     }
 }

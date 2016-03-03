@@ -8,14 +8,12 @@ class FormBuilder implements ArrayAccess
 {
     private
         $formopt=[],
-        $view='formbuilder.bootstrap.base',
+        $view='formbuilder.bootstrap.form.base',
         $fields=[];
 
-    function __construct(){}
-
-    function make($opt=[]){
+    function __construct($opt)
+    {
         $this->formopt=$opt;
-        return $this;
     }
 
     function removeField($k)
@@ -24,75 +22,54 @@ class FormBuilder implements ArrayAccess
     }
 
 
-    function setView($v)
+    function view($v)
     {
         $this->view=$v;
         return $this;
     }
 
 
-    public function offsetExists($k)
+    function __call($fn,$args)
     {
-        return array_key_exists($k,$this->fields);
-    }
-
-
-    /**
-     * @param string $k
-     * @return FieldProvider
-     */
-    private function initField($k){
-        return $this->fields[$k]=new FieldProvider($this,$k);//FormField($this,$k);
-    }
-    private function initFieldGroup($k){
-        return $this->fields[$k]=new FormFieldGroup($this,$k);
-    }
-
-
-    /**
-     * @param mixed $k
-     * @return FieldProvider
-     */
-    public function offsetGet($k)
-    {
-        return $this->initField($k);
+        $name=$args[0];
+        $this->fields[$name]=\FormBuilder::field($this,$name,$fn);
+        return $this->fields[$name];
     }
 
     /**
-     * @param $name
-     * @return FormFieldGroup
+     * @param String $k
+     * @return FormField
      */
-    function group($name)
+    function __get($k)
     {
-        return $this->initFieldGroup($name);
-    }
-    public function offsetSet($k, $v)
-    {
-        return $this->initField($k)->text($v);
-    }
-
-    public function offsetUnset($k)
-    {
-        $this->removeField($k);
-    }
-
-    function __set($k,FormBuilderField $f)
-    {
-        return $this->fields[$k]=$f;
-    }
-
-    /**
-     * @param $k
-     * @return FieldProvider
-     */
-    function __get($k){
-        return $this->initField($k);
+        return array_key_exists($k,$this->fields[$k])?
+                    $this->fields[$k]:       //Return field
+                    $this->call('text',[$k]);//Init and return a new Text field
     }
 /*
     function __call($k,$arg){
         return $this->initField($arg[0])->{$k}(isset($arg[1])?$arg[1]:null);
     }
 */
+    function openForm()
+    {
+
+        $opt=$this->formopt;
+        foreach($this->fields AS $f){
+            if($f->isFile()){
+                $opt['files']=true;
+                break;
+            }
+        }
+
+        return \Form::open($opt);
+    }
+
+    function closeForm()
+    {
+        return \Form::close();
+    }
+
     function render(){
         $v=view($this->view,[
             'opt'=>$this->formopt,
@@ -107,21 +84,27 @@ class FormBuilder implements ArrayAccess
         return ''.$this->render();
     }
 
-    function openForm(){
-        return \Form::open($this->formopt);
-    }
-    function closeForm(){
-        return \Form::close();
+    public function offsetExists($k)
+    {
+        return array_key_exists($k,$this->fields);
     }
 
+    public function offsetGet($k)
+    {
+        return $this->__get($k);
+    }
 
-    function fillValuesWith($el){
+    public function offsetSet($k, $v){}
+
+    public function offsetUnset($k)
+    {
+        unset($this->fields[$k]);
+    }
+
+    function fill($el){
         foreach($this->fields AS $k=>&$f){
-
-            if(isset($el[$k]))
-                $f->value($el[$k]);
+            if(array_key_exists($k,$el))
+                $f->value=$el[$k];
         }
     }
-
-
 }

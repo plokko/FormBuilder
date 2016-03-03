@@ -1,5 +1,5 @@
 # FormBuilder
-Laravel Helper for creating form
+Laravel Helper module for creating forms and input fields
 
 ##Installation
 
@@ -7,15 +7,10 @@ Laravel Helper for creating form
 ```shell
 composer require plokko/formbuilder
 ```
-and then publish the default views and config files
-```shell
-php artisan vendor:publish
-```
-
 2. Add the provider and facades in the app config file
 /config/app.php
-```php
 
+```php
 'providers' => [
     //...
     //FormBuilder//
@@ -29,58 +24,61 @@ php artisan vendor:publish
     'FormBuilder'=> plokko\FormBuilder\Facades\FormBuilder::class,
     //...
 ]
-//.....
-
-
+//...
 ```
+
 ##Use
 
-First create a new instance of **FormBuilder** with *make* command and assign it to a variable
+* create the **FormBuilder** instance
+First create a new instance of **FormBuilder** in your view with the *make* command and assign it to a variable
 ```php
 <?php
-$fb=FormBuilder::make();
+$fb=FormBuilder::make(['route'=>route('my.destination.route')]);
 ```
+The *make* function accepts the same parameters as **laravelcollective/html** [**Form::open**](https://laravelcollective.com/docs/5.2/html#opening-a-form)
 
-You can then add fields accessing the object as parameter
+* declaring the fields
+You can then add fields using the requested field type as method name and field name as value
 ```php
-$fb->field_name1;
+$fb->text('text_field'); //Input field (type=text)
+$fb->email('email_field);//Email input field (type=email)
+$fb->textarea('message');//Textarea_
 ```
-or as an array
+
+* Accessing the fields
+
+To set the options to the field you can access the field when declared
 ```php
-$fb['field_name2[]'];
+$fb->text('field_required')->required()->addClass('required_field');
 ```
 
-You can specify the field type or other parameters accessing the field as a method
+or you can retrieve it later by accessing it by name as a parameter or array
 ```php
-$fb->text_field1->text();
-$fb['text-field2']->text();
-$fb->text_required->text()->required();
-$fb->date_field->date();
-$fb->select_field->select();
+$fb->field_required->value('My value');
+$fb['field_required']->addClass('my-other-class');
 ```
 
-You can then render the form in thee view with
-```html
-{{$fb->openForm()}}<!--Open form-->
+If you try to access and undeclared field the field will be automatically declared as a text field
+```php
+$fb->undeclared_field->value(1);
+// Equals to: //
+$fb->text('undeclared_field')->value(1);
+```
 
-    <!--you can add custom html code here-->
+* Render the form
 
+To render the form you should first open and close the form using the *openForm()* and *closeForm()* functions, rendering the fields with the *render()* function between them.
+
+```php
+{!! $fb->openForm() !!}
+    <!--render the fields/-->
+    {!! $fb->render() !!}
     
-    {!! $fb !!}<!--Render the form fields, same as $fb->render() -->
-    
+    <!--Add some basic submit buttons-->
     <button type=submit>Submit</button>
+    <button type=reset>Reset</button>
     
-{{$fb->closeForm()}}<!--Close form-->
+{!! $fb->closeForm() !!}
 ```
-##Form view
 
-
-##Documentation
-
-The **make** command uses the same parameters as the [*laravelcollective* *Form::open*](https://laravelcollective.com/docs/5.1/html#opening-a-form "See documentation")
-
-To change the form view use the command **->setView(String $view_name)**
-        $fb->setView('formbuilder.bootstrap.inline');
-
-
-
+##Customization
