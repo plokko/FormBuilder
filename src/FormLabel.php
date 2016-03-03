@@ -5,9 +5,11 @@ class FormLabel
 {
     public
         $text;
-    private
+
+    protected
         $name,
-        $options=[];
+        $options=[],
+        $hidden=false;
 
     function __construct($name,$text)
     {
@@ -17,9 +19,37 @@ class FormLabel
 
     function render()
     {
-        return \Form::label($this->name,$this->text,$this->options);
+        return $this->hidden?
+                 '':
+                 \Form::label($this->name,$this->text,$this->options);
     }
 
+    /**
+     * Set an option value
+     * @param string $k option name
+     * @param mixed|null $v option value,if null it will be removed
+     * @return FormLabel $this
+     */
+    function option($k, $v)
+    {
+        if($v==null)
+            unset($this->options[$k]);
+        else
+            $this->options[$k]=$v;
+        return $this;
+    }
+
+    function hidden($hidden=true)
+    {
+        $this->hidden=!!$hidden;
+        return $this;
+    }
+
+    /**
+     * Replace all the options with the given array
+     * @param array $options
+     * @return FormLabel $this
+     */
     function options(array $options)
     {
         $this->options=$options;
@@ -30,4 +60,5 @@ class FormLabel
     {
         return $this->text;
     }
+
 }

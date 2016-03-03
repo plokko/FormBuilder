@@ -1,6 +1,8 @@
 <?php
 namespace plokko\FormBuilder\fields;
 
+use plokko\FormBuilder\HiddenLabel;
+
 class InputField extends FormField
 {
 
@@ -27,5 +29,14 @@ class InputField extends FormField
                 return $form->{$t}($this->name,$this->options);
 
         }
+    }
+    function __get($k)
+    {
+        $v=parent::__get($k);
+        // Don't display any label for hidden fields //
+        if($k=='label' && $this->type=='hidden')
+            return $v->hidden();
+
+        return $v;
     }
 }

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Request;
 use League\Flysystem\Exception;
 use plokko\FormBuilder\FormBuilder;
 use plokko\FormBuilder\FormLabel;
+use plokko\FormBuilder\HiddenLabel;
 
 /**
  * Base class for FormBuilder fields
@@ -90,7 +91,9 @@ class FormField
             $id=uniqid(str_replace(['[]','[',' ',']'], '_', $this->name));
             $this->id($id);
         }
-        return new FormLabel($id,$this->label?:(str_replace(['[]','[',']','_'], ['','(',')',' '],$this->name)));
+        $text=$this->label?:(str_replace(['[]','[',']','_'], ['','(',')',' '],$this->name));
+
+        return new FormLabel($id,$text);
     }
 
     function getValue()

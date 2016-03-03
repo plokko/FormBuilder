@@ -1,21 +1,16 @@
+<?php
+/**@var array $fields**/
+?>
 @foreach($fields AS $field)
-
+    <?/**@var \plokko\FormBuilder\FormField $field**/?>
     <div class="form-group">
-        {!! $field->renderLabel(['class'=>'col-sm-2 control-label']) !!}
+        {!! $field->label->option('class','col-sm-2 control-label')->render()!!}
         <div class="row">
             <div class="col-sm-8">
-            @if(!$field->isGroup())
-                    {!!
-                        ($field->type=='checkbox'||$field->type=='radio')?
-                            $field->render()://No form-control for input or radios
-                            $field->addClass('form-control')->render()
-                    !!}
-            @else
-                @foreach($field AS $f)
-                    {!! $f->renderLabel() !!}
-                    {!! $f->addClass('form-control')->render() !!}
-                @endforeach
-            @endif
+                @if($field->type!='checkbox'&&$field->type!='radio')
+                    <?$field->addClass('form-control');/*Add class except for radio or checkbox fields*/?>
+                @endif
+                {!! $field->render() !!}
             </div>
         </div>
     </div>
