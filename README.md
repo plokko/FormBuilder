@@ -1,5 +1,9 @@
 # FormBuilder
 Laravel Helper module for creating forms and input fields
+Version 0.2 Beta
+## Changelog
+
+* 0.2 beta - Rewritten from scratch, not compatible with previus versions
 
 ##Installation
 
@@ -81,4 +85,111 @@ To render the form you should first open and close the form using the *openForm(
 {!! $fb->closeForm() !!}
 ```
 
-##Customization
+## Customization
+
+### Form view
+
+You can specify how the form will be rendered by applying a view to the **FormBuilder** class
+```php
+<?php
+$fb=FormBuilder::make(['route'=>route('my.destination.route')])
+        ->view('my.custom.view');
+```
+
+You can specify the view like following where *$fields* is an array containing all the defined fields
+```php
+<?php
+/**@var array $fields**/
+?>
+@foreach($fields AS $field)
+    <?/**@var \plokko\FormBuilder\FormField $field**/?>
+    <div class="form-group">
+        {!! $field->label->render()!!}
+        @if($field->type!='checkbox'&&$field->type!='radio')
+            <?$field->addClass('form-control');/*Add class except for radio or checkbox fields*/?>
+        @endif
+        {!! $field->render() !!}
+    </div>
+
+@endforeach
+```
+The view will be called with the **render** function.
+
+### Expanding functionalities
+
+You can easly add or replace field types by changing the config file;
+to do so first publish the config
+```shell
+php artisan vendor:publish
+```
+
+Then edit the */config/app.php* file
+
+```php
+<?php
+return [
+    /** Default view for FormBuilder **/
+    'view'=>'formbuilder::bootstrap.form.base',
+    /** Registered FormField providers as type=>classname **/
+    'fieldProviders'=>[
+        'select'    => plokko\FormBuilder\fields\SelectField::class,
+
+        'text'      => plokko\FormBuilder\fields\InputField::class,
+        'email'     => plokko\FormBuilder\fields\InputField::class,
+        'hidden'    => plokko\FormBuilder\fields\InputField::class,
+        'number'    => plokko\FormBuilder\fields\InputField::class,
+        'password'  => plokko\FormBuilder\fields\InputField::class,
+
+        'file'      => plokko\FormBuilder\fields\FileField::class,
+
+        'radio'     => plokko\FormBuilder\fields\CheckboxField::class,
+        'checkbox'  => plokko\FormBuilder\fields\CheckboxField::class,
+
+        'textarea'  => plokko\FormBuilder\fields\InputField::class,
+        'select2'    => plokko\FormBuilder\fields\Select2Field::class,
+
+    ],
+];
+```
+
+You can create a new field type by expanding the **plokko\FormBuilder\fields\FormField** class like so:
+```php
+<?php
+namespace mynamespace;
+
+use plokko\FormBuilder\fields\FormField;
+
+class MyCustomField extends FormField
+{
+    //...
+    function myFunction()
+    {
+        //...
+        return $this;
+    }
+    //...
+}
+```
+
+and then adding it in the config file like so
+```php
+<?php
+return [
+    /** Default view for FormBuilder **/
+    'view'=>'my.default.form.view',
+    /** Registered FormField providers as type=>classname **/
+    'fieldProviders'=>[
+        //...
+        'myfield'=>mynamespace/MyCustomField::class,
+        'myfield2'=>mynamespace/MyCustomField::class,
+        //...
+    ],
+];
+```
+
+You can then add the field using the declared name:
+```php
+//...
+$fb->myfield('field1')->myFunction();
+$fb->myfield2('field2')->myFunction()->required()->value(2);
+```
