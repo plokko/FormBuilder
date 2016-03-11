@@ -51,8 +51,10 @@ class FormField
 
             case 'label':
                 return $this->getLabel();
+
+            case 'disabled':
             case 'required':
-                return isset($this->options['required']);
+                return isset($this->options[$k]);
 
             case 'id':
                 return isset($this->options['id'])?$this->options['id']:null;
@@ -129,6 +131,20 @@ class FormField
             $this->options['required']=true;
         else
             unset($this->options['required']);
+        return $this;
+    }
+
+    /**
+     * Set the field as disabled
+     * @param bool $disabled
+     * @return $this
+     */
+    function disabled($disabled=true)
+    {
+        if($disabled)
+            $this->options['disabled']=true;
+        else
+            unset($this->options['disabled']);
         return $this;
     }
 
@@ -224,5 +240,8 @@ class FormField
         return $this;
     }
 
-
+    function fill($value)
+    {
+        return $this->value($value);
+    }
 }

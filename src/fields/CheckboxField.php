@@ -13,11 +13,18 @@ class CheckboxField extends FormField
         parent::__construct($form, $name, ($type=='radio'?'radio':'checkbox'));
     }
 
+    function getValue()
+    {
+        //Does NOT use the old value (only checked status changes)
+        return $this->value;
+    }
+
     function render()
     {
+        unset($this->options['checked']);
         $form=\App::make('form');
-        $v=$this->getValue();
-        return $form->{$this->type}($this->name,$v,$this->checked,$this->options);
+
+        return $form->{$this->type}($this->name,$this->getValue(),$this->checked,$this->options);
     }
 
     /**
@@ -40,4 +47,10 @@ class CheckboxField extends FormField
                 return parent::__get($k);
         }
     }
+
+    function fill($value)
+    {
+        $this->checked($value==$this->value);
+    }
+
 }

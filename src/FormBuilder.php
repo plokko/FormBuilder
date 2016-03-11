@@ -8,7 +8,7 @@ class FormBuilder implements ArrayAccess
 {
     private
         $formopt=[],
-        $view='formbuilder.bootstrap.form.base',
+        $view='formbuilder::bootstrap.form.base',
         $fields=[];
 
     function __construct($opt)
@@ -102,9 +102,13 @@ class FormBuilder implements ArrayAccess
     }
 
     function fill($el){
-        foreach($this->fields AS $k=>&$f){
+        foreach($this->fields AS $k=>&$field){
+            /**@var \plokko\FormBuilder\fields\FormField $field **/
             if(array_key_exists($k,$el))
-                $f->value=$el[$k];
+            {
+                $field->fill($el[$k]);
+            }
         }
+        return $this;
     }
 }

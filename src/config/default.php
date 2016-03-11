@@ -17,8 +17,13 @@ return [
         'radio'     => plokko\FormBuilder\fields\CheckboxField::class,
         'checkbox'  => plokko\FormBuilder\fields\CheckboxField::class,
 
+        'radios'    => plokko\FormBuilder\fields\RadioGroup::class,
+        'radiogroup'    => plokko\FormBuilder\fields\RadioGroup::class,
+
+
         'textarea'  => plokko\FormBuilder\fields\InputField::class,
         'select2'    => plokko\FormBuilder\fields\Select2Field::class,
+
 
     ],
 ];
