@@ -23,7 +23,6 @@ class CheckboxField extends FormField
     {
         unset($this->options['checked']);
         $form=\App::make('form');
-
         return $form->{$this->type}($this->name,$this->getValue(),$this->checked,$this->options);
     }
 

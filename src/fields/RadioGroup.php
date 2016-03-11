@@ -34,6 +34,12 @@ class RadioGroup extends FormField implements \ArrayAccess
     }
 
 
+    function option($value,$label=null)
+    {
+        $this->addOption($value,$label);
+        return $this->offsetGet($value);
+    }
+
     /**
      * Render the form group
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -45,7 +51,7 @@ class RadioGroup extends FormField implements \ArrayAccess
         foreach($this->fields AS $k=>&$f){
             /**@var CheckboxField $f **/
             $f->checked($k==$value);
-            $f->required($this->__get('required'));
+            $f->options(array_intersect_key($this->options,['disabled'=>1,'required'=>1,]));
         }
 
         return view($this->view,[
@@ -61,7 +67,11 @@ class RadioGroup extends FormField implements \ArrayAccess
 
     public function offsetGet($offset)
     {
-        return isset($this->fields[$offset])?$this->fields[$offset]:null;
+        // Automatically adds option if non existent //
+        if(!isset($this->fields[$offset]))
+            $this->addOption($offset);
+
+        return $this->fields[$offset];
     }
 
     public function offsetSet($offset, $value)

@@ -111,4 +111,9 @@ class FormBuilder implements ArrayAccess
         }
         return $this;
     }
+
+    function getFieldNames()
+    {
+        return array_keys($this->fields);
+    }
 }
