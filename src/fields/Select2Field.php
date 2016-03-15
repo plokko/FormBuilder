@@ -162,9 +162,6 @@ class Select2Field extends SelectField
             $values=$values+array_combine($v,$v);
         }
 
-        var_dump(compact('values','v'));
-        //$required=$this->__get('required');
-
         return \App::make('form')->select($this->name,$values,$v,$this->options);
     }
 }
