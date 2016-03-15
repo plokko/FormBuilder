@@ -33,19 +33,21 @@ class InputField extends FormField
 
     function min($n=null)
     {
+        $tag=in_array($this->type,['number','range','date','datetime','datetime-local','month','time','week'])?'min':'minlength';
         if($n!==null)
-            $this->attributes['min']=$n;
+            $this->attributes[$tag]=$n;
         else
-            unset($this->attributes['min']);
+            unset($this->attributes[$tag]);
         return $this;
     }
 
     function max($n=null)
     {
+        $tag=in_array($this->type,['number','range','date','datetime','datetime-local','month','time','week'])?'max':'maxlength';
         if($n!==null)
-            $this->attributes['max']=$n;
+            $this->attributes[$tag]=$n;
         else
-            unset($this->attributes['max']);
+            unset($this->attributes[$tag]);
         return $this;
     }
 
