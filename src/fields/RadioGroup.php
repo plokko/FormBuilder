@@ -51,7 +51,9 @@ class RadioGroup extends FormField implements \ArrayAccess
         foreach($this->fields AS $k=>&$f){
             /**@var CheckboxField $f **/
             $f->checked($k==$value);
-            $f->options(array_intersect_key($this->options,['disabled'=>1,'required'=>1,]));
+
+            $f->disabled($this->__get('disabled'));
+            $f->required($this->__get('required'));
         }
 
         return view($this->view,[
@@ -65,7 +67,7 @@ class RadioGroup extends FormField implements \ArrayAccess
         return isset($this->fields[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function &offsetGet($offset)
     {
         // Automatically adds option if non existent //
         if(!isset($this->fields[$offset]))

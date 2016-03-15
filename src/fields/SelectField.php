@@ -18,16 +18,36 @@ class SelectField extends FormField
     }
 
 
+    /**
+     * Allows multiple values for the field
+     * @param bool $multiple
+     * @return $this
+     */
+    function multiple($multiple=true)
+    {
+        if($multiple)
+            $this->options['multiple']='multiple';
+        else
+            unset($this->options['multiple']);
+        return $this;
+    }
+
     function render()
     {
         $form=\App::make('form');
-        $t=$this->type;
+        //$t=$this->type;
         $v=$this->getValue();
-        $values=$this->values;
-        //Optional value if not required//
-        if(!$this->__get('required') && !array_key_exists('',$values))
-            $values=[''=>'']+$values;
+        $required=$this->__get('required');
+        $multiple=$this->__get('multiple');
 
+        //- Auto fix naming for multiple values -//
+        if($multiple&& substr($this->name,-2)!='[]')
+            $this->name.='[]';
+
+        $values=$this->values;
+        //- Optional value if not required -//
+        if(!$required && !$multiple && !array_key_exists('',$values))
+            $values=[''=>'']+$values;
         return $form->select($this->name,$values,$v,$this->options);
     }
 
@@ -57,6 +77,8 @@ class SelectField extends FormField
     function __get($k)
     {
         switch($k) {
+            case 'multiple':
+                return isset($this->options['multiple']);
             case 'values'://Read only access
                 return $this->values;
             default:

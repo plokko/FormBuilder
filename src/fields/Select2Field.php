@@ -17,11 +17,15 @@ class Select2Field extends SelectField
         View::startSection('scripts');
         ?><link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/js/select2.min.js"></script>
-        <script>/**Selec2Field init**/
+        <script>
+        /** Selec2Field init select2 plugin**/
         $(document).ready(function(){
-            $('select.plokko_select2field').each(function(){
+            $('select[data-select2fieldinit="true"]').each(function(){
                 var e=$(this);
-                var opt=e.data('options');
+                console.info(e);
+                e.removeData('select2fieldinit');
+                var opt=e.data('select2options');
+                console.log(opt);
 
                 if(opt.ajax){
 
@@ -75,7 +79,7 @@ class Select2Field extends SelectField
                         }
                     };
                 }
-
+                console.info('init!');
                 e.select2(opt);
             });
         });
@@ -120,12 +124,47 @@ class Select2Field extends SelectField
         return $this;
     }
 
+    /**
+     * Allow the user to add custom tags
+     * @param bool $allow
+     * @return $this
+     */
+    function allowAdd($allow=true)
+    {
+        if($allow)
+            $this->select2Options['tags']=true;
+        else
+            unset($this->select2Options['tags']);
+        return $this;
+    }
+
+
     function render()
     {
         self::init();
-        $this->addClass('plokko_select2field');
-        //attach select2 options as data
-        $this->option('data-options',json_encode($this->select2Options));
-        return parent::render();
+
+        //- inits as select2 -//
+        $this->option('data-select2fieldinit','true');
+        // attach select2 options as data value //
+        $this->option('data-select2options',json_encode($this->select2Options,JSON_FORCE_OBJECT));
+
+        $multiple=$this->__get('multiple');
+
+        //- Auto fix naming for multiple values -//
+        if($multiple&& substr($this->name,-2)!='[]') $this->name.='[]';
+
+
+        $values=$this->values;
+        $v=$this->getValue();
+        // Add new values to set array //
+        if($this->select2Options['tags'] && is_array($v))
+        {
+            $values=$values+array_combine($v,$v);
+        }
+
+        var_dump(compact('values','v'));
+        //$required=$this->__get('required');
+
+        return \App::make('form')->select($this->name,$values,$v,$this->options);
     }
 }

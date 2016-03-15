@@ -17,6 +17,8 @@ return [
         'radio'     => plokko\FormBuilder\fields\CheckboxField::class,
         'checkbox'  => plokko\FormBuilder\fields\CheckboxField::class,
 
+        'group'    => plokko\FormBuilder\fields\FieldGroup::class,
+
         'radios'    => plokko\FormBuilder\fields\RadioGroup::class,
         'radiogroup'    => plokko\FormBuilder\fields\RadioGroup::class,
 

@@ -42,7 +42,7 @@ class FormBuilder implements ArrayAccess
      */
     function __get($k)
     {
-        return array_key_exists($k,$this->fields[$k])?
+        return isset($this->fields[$k])?
                     $this->fields[$k]:       //Return field
                     $this->call('text',[$k]);//Init and return a new Text field
     }
@@ -86,10 +86,10 @@ class FormBuilder implements ArrayAccess
 
     public function offsetExists($k)
     {
-        return array_key_exists($k,$this->fields);
+        return isset($this->fields[$k]);
     }
 
-    public function offsetGet($k)
+    public function &offsetGet($k)
     {
         return $this->__get($k);
     }

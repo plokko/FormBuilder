@@ -57,12 +57,11 @@ class FormField
             case 'required':
                 return isset($this->options[$k]);
 
+            default:
             case 'id':
             case 'class':
                 return isset($this->options[$k])?$this->options[$k]:null;
 
-            default:
-                return null;
         }
     }
 
@@ -168,9 +167,9 @@ class FormField
      */
     function addClass($class)
     {
-        $this->options['class']=isset($this->options['class'])?
-                                        $this->options['class'].' '.$class
-                                        :$class;
+        $this->options['class']=(isset($this->options['class']))?
+            implode(' ',array_unique(explode(' ',$this->options['class'])+explode(' ',$class)))//Remove repeated classes
+            :$class;
 
         return $this;
     }
