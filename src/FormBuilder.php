@@ -104,7 +104,7 @@ class FormBuilder implements ArrayAccess
     function fill($el){
         foreach($this->fields AS $k=>&$field){
             /**@var \plokko\FormBuilder\fields\FormField $field **/
-            if(array_key_exists($k,$el))
+            if(isset($el[$k]))
             {
                 $field->fill($el[$k]);
             }

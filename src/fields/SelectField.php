@@ -46,7 +46,7 @@ class SelectField extends FormField
 
         $values=$this->values;
         //- Optional value if not required -//
-        if(!$required && !$multiple && !array_key_exists('',$values))
+        if(!$required && !$multiple && !isset($values['']))
             $values=[''=>'']+$values;
         return $form->select($this->name,$values,$v,$this->attributes);
     }
