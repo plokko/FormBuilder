@@ -26,9 +26,9 @@ class SelectField extends FormField
     function multiple($multiple=true)
     {
         if($multiple)
-            $this->options['multiple']='multiple';
+            $this->attributes['multiple']='multiple';
         else
-            unset($this->options['multiple']);
+            unset($this->attributes['multiple']);
         return $this;
     }
 
@@ -48,7 +48,7 @@ class SelectField extends FormField
         //- Optional value if not required -//
         if(!$required && !$multiple && !array_key_exists('',$values))
             $values=[''=>'']+$values;
-        return $form->select($this->name,$values,$v,$this->options);
+        return $form->select($this->name,$values,$v,$this->attributes);
     }
 
     /**
@@ -78,7 +78,7 @@ class SelectField extends FormField
     {
         switch($k) {
             case 'multiple':
-                return isset($this->options['multiple']);
+                return isset($this->attributes['multiple']);
             case 'values'://Read only access
                 return $this->values;
             default:

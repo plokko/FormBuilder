@@ -34,7 +34,7 @@ class RadioGroup extends FormField implements \ArrayAccess
     }
 
 
-    function option($value,$label=null)
+    function attribute($value, $label=null)
     {
         $this->addOption($value,$label);
         return $this->offsetGet($value);

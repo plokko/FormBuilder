@@ -21,9 +21,9 @@ class CheckboxField extends FormField
 
     function render()
     {
-        unset($this->options['checked']);
+        unset($this->attributes['checked']);
         $form=\App::make('form');
-        return $form->{$this->type}($this->name,$this->getValue(),$this->checked,$this->options);
+        return $form->{$this->type}($this->name,$this->getValue(),$this->checked,$this->attributes);
     }
 
     /**

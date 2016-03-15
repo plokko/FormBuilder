@@ -13,7 +13,7 @@ class FileField extends FormField
     function render()
     {
         $form=\App::make('form');
-        return $form->file($this->name,$this->options);
+        return $form->file($this->name,$this->attributes);
     }
 
     /**
@@ -24,9 +24,9 @@ class FileField extends FormField
     function accept($opt=null)
     {
         if($opt==null)
-            unset($this->options['accept']);
+            unset($this->attributes['accept']);
         else
-            $this->options['accept']=is_array($opt)?implode(',',$opt):$opt;
+            $this->attributes['accept']=is_array($opt)?implode(',',$opt):$opt;
         return $this;
     }
 
@@ -34,9 +34,9 @@ class FileField extends FormField
     function multiple($multiple=true)
     {
         if(!$multiple)
-            unset($this->options['multiple']);
+            unset($this->attributes['multiple']);
         else
-            $this->options['multiple']='multiple';
+            $this->attributes['multiple']='multiple';
         return $this;
     }
 

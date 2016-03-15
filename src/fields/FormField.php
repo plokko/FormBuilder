@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Request;
 use League\Flysystem\Exception;
 use plokko\FormBuilder\FormBuilder;
 use plokko\FormBuilder\FormLabel;
-use plokko\FormBuilder\HiddenLabel;
 
 /**
  * Base class for FormBuilder fields
@@ -23,7 +22,7 @@ class FormField
         $value=null,
         $name,
         $label=null,
-        $options=[];
+        $attributes=[];
 
     /**
      * FormField constructor.
@@ -46,7 +45,7 @@ class FormField
             // Read only fields //
             case 'name':
             case 'type':
-            case 'options':
+            case 'attributes':
                 return $this->{$k};
 
             case 'label':
@@ -55,12 +54,12 @@ class FormField
 
             case 'disabled':
             case 'required':
-                return isset($this->options[$k]);
+                return isset($this->attributes[$k]);
 
             default:
             case 'id':
             case 'class':
-                return isset($this->options[$k])?$this->options[$k]:null;
+                return isset($this->attributes[$k])?$this->attributes[$k]:null;
 
         }
     }
@@ -129,9 +128,9 @@ class FormField
     function required($required=true)
     {
         if($required)
-            $this->options['required']='required';
+            $this->attributes['required']='required';
         else
-            unset($this->options['required']);
+            unset($this->attributes['required']);
         return $this;
     }
 
@@ -143,9 +142,9 @@ class FormField
     function disabled($disabled=true)
     {
         if($disabled)
-            $this->options['disabled']='disabled';
+            $this->attributes['disabled']='disabled';
         else
-            unset($this->options['disabled']);
+            unset($this->attributes['disabled']);
         return $this;
     }
 
@@ -156,7 +155,7 @@ class FormField
      */
     function setClass($class)
     {
-        $this->options['class']=$class;
+        $this->attributes['class']=$class;
         return $this;
     }
 
@@ -167,8 +166,8 @@ class FormField
      */
     function addClass($class)
     {
-        $this->options['class']=(isset($this->options['class']))?
-            implode(' ',array_unique(explode(' ',$this->options['class'])+explode(' ',$class)))//Remove repeated classes
+        $this->attributes['class']=(isset($this->attributes['class']))?
+            implode(' ',array_unique(explode(' ',$this->attributes['class'])+explode(' ',$class)))//Remove repeated classes
             :$class;
 
         return $this;
@@ -187,7 +186,7 @@ class FormField
      */
     function render()
     {
-        return \Form::text($this->name,$this->getValue(),$this->options);
+        return \Form::text($this->name,$this->getValue(),$this->attributes);
     }
 
     function __toString()
@@ -201,7 +200,7 @@ class FormField
 
     function id($id=null)
     {
-        $this->options['id']=$id;
+        $this->attributes['id']=$id;
         return $this;
     }
     /**
@@ -216,28 +215,28 @@ class FormField
     }
 
     /**
-     * Set an option value
+     * Set a field attribute value
      * @param string $k option name
      * @param mixed|null $v option value,if null it will be removed
      * @return FormField $this
      */
-    function option($k, $v)
+    function attribute($k, $v)
     {
         if($v==null)
-            unset($this->options[$k]);
+            unset($this->attributes[$k]);
         else
-            $this->options[$k]=$v;
+            $this->attributes[$k]=$v;
         return $this;
     }
 
     /**
-     * Replace all the options with the given array
-     * @param array $options
+     * Replace all the field attributes with the given array
+     * @param array $attributes
      * @return FormField $this
      */
-    function options(array $options)
+    function attributes(array $attributes)
     {
-        $this->options=$options;
+        $this->attributes=$attributes;
         return $this;
     }
 

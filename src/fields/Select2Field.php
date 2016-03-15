@@ -144,9 +144,9 @@ class Select2Field extends SelectField
         self::init();
 
         //- inits as select2 -//
-        $this->option('data-select2fieldinit','true');
+        $this->attribute('data-select2fieldinit','true');
         // attach select2 options as data value //
-        $this->option('data-select2options',json_encode($this->select2Options,JSON_FORCE_OBJECT));
+        $this->attribute('data-select2options',json_encode($this->select2Options,JSON_FORCE_OBJECT));
 
         $multiple=$this->__get('multiple');
 
@@ -162,6 +162,6 @@ class Select2Field extends SelectField
             $values=$values+array_combine($v,$v);
         }
 
-        return \App::make('form')->select($this->name,$values,$v,$this->options);
+        return \App::make('form')->select($this->name,$values,$v,$this->attributes);
     }
 }
