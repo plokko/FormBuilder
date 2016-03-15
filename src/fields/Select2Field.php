@@ -157,7 +157,7 @@ class Select2Field extends SelectField
         $values=$this->values;
         $v=$this->getValue();
         // Add new values to set array //
-        if($this->select2Options['tags'] && is_array($v))
+        if(isset($this->select2Options['tags']) && is_array($v))
         {
             $values=$values+array_combine($v,$v);
         }
