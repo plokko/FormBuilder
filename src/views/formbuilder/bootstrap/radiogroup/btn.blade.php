@@ -11,7 +11,7 @@
             if($field->checked)$cl[]='active';
             echo implode(' ',$cl);
     ?>">
-        {!! $field->setClass('')->option('autocomplete','off')->render() !!}
+        {!! $field->setClass('')->attribute('autocomplete','off')->render() !!}
         {!! $field->label->text!!}
     </label>
 @endforeach

@@ -1,6 +1,6 @@
 <?/**@var \plokko\FormBuilder\FormField $field**/?>
 <div class="form-group">
-    {!! $field->label->option('class','col-sm-2 control-label')->render()!!}
+    {!! $field->label->attribute('class','col-sm-2 control-label')->render()!!}
     <div class="row">
         <div class="col-sm-8">
             @if($field->type!='checkbox'&&$field->type!='radio')

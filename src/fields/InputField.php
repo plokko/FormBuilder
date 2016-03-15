@@ -31,24 +31,22 @@ class InputField extends FormField
         }
     }
 
+
+    function pattern($pattern)
+    {
+        return $this->attribute('pattern',$pattern);
+    }
+
     function min($n=null)
     {
         $tag=in_array($this->type,['number','range','date','datetime','datetime-local','month','time','week'])?'min':'minlength';
-        if($n!==null)
-            $this->attributes[$tag]=$n;
-        else
-            unset($this->attributes[$tag]);
-        return $this;
+        return $this->attribute($tag,$n);
     }
 
     function max($n=null)
     {
         $tag=in_array($this->type,['number','range','date','datetime','datetime-local','month','time','week'])?'max':'maxlength';
-        if($n!==null)
-            $this->attributes[$tag]=$n;
-        else
-            unset($this->attributes[$tag]);
-        return $this;
+        return $this->attribute($tag,$n);
     }
 
     function __get($k)
