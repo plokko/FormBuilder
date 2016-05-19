@@ -1,22 +1,26 @@
 <?php
 namespace plokko\FormBuilder\fields;
 
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\View;
+use View;
 
 class Select2Field extends SelectField
 {
-    static
+    protected static
         $init=false;
     protected
         $select2Options=[];
 
     private static function init()
     {
+        if(self::$init)return;
+        self::$init=true;
         // Push code to "scripts" section //
-        View::startSection('scripts');
-        ?><link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/css/select2.min.css" rel="stylesheet" />
+        View::startPush('scripts');
+        /*
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/js/select2.min.js"></script>
+        */
+        ?>
         <script>
         /** Selec2Field init select2 plugin**/
         $(document).ready(function(){
@@ -84,7 +88,7 @@ class Select2Field extends SelectField
             });
         });
         </script><?
-        View::appendSection();
+        View::stopPush();
     }
 
     /**
