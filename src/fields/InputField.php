@@ -1,6 +1,7 @@
 <?php
 namespace plokko\FormBuilder\fields;
 
+use App;
 use plokko\FormBuilder\HiddenLabel;
 
 class InputField extends FormField
@@ -8,23 +9,36 @@ class InputField extends FormField
 
     function render()
     {
-        $form=\App::make('form');
+        $form= App::make('form');
         $t=$this->type;
         $v=$this->getValue();
         ///
         switch($t){
             default:$t='text';
+            //HTML5 input types//
+            case 'date':
+            case 'datetime':
+            case 'datetime-local':
+            case 'email':
+            case 'month':
+            case 'number':
+            case 'range':
+            case 'search':
+            case 'tel':
+            case 'time':
+            case 'url':
+            case 'week':
+            //
             case 'hidden':
             case 'textarea':
-            case 'number':
             case 'text':
-            case 'email':
                 return $form->{$t}($this->name,$v,$this->attributes);
             /*
             case 'radio':
             case 'checkbox':
                 $checked=false;
-                return $form->checkbox($this->name,$v,$checked,$this->options);*/
+                return $form->checkbox($this->name,$v,$checked,$this->options);
+            */
             case 'password':
                 return $form->{$t}($this->name,$this->attributes);
 
